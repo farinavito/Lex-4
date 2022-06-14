@@ -129,7 +129,7 @@ contract TradeV1 {
     ///@notice Rejecting selling the product by the seller
     function rejectSelling(uint256 _id) external {
         //check if the product's deal has already ended
-        require(exactProduct[_id].dealEnded == false, "This product has been dealEnded");
+        require(exactProduct[_id].dealEnded == false, "The deal has already ended");
         //check if the seller is the correct one
         require(exactProduct[_id].seller == msg.sender, "You aren't the seller of this product");
         //return the price of the product to the buyer
