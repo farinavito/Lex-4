@@ -201,7 +201,6 @@ def test_sellerProducts_3(deploy):
 '''TESTING REJECTSELLING'''  
 
 '''DOESN'T WORK'''
-
 def test_rejectSelling_first_reuqirement_fail(deploy):
     '''test if the first requirement fails'''
     deploy.payOut(1, {'from': accounts[seller]})
@@ -222,16 +221,17 @@ def test_rejectSelling_second_reuqirement_fail(deploy):
         pytest.fail("The try-except concept has failed in test_rejectSelling_second_reuqirement_fail")
     except Exception as e:
         assert e.message[50:] == "You aren't the seller of this product"
-@pytest.mark.aaa
-def test_rejectSelling_second_reuqirement_fail(deploy):
-    '''test if the second requirement fails'''
-    try:
-        chain = Chain()
-        chain.sleep(604800 + now + 1000000000)
-        deploy.rejectSelling(1, {'from': accounts[buyer]})
-        pytest.fail("The try-except concept has failed in test_rejectSelling_second_reuqirement_fail")
-    except Exception as e:
-        assert e.message[50:] == "You aren't the seller of this product"
+
+def test_rejectSelling_withdraw_buyer(deploy):
+    '''test if the price of the product is returned to the buyer'''
+    amount = deploy.getWithdrawalBuyer({'from': accounts[buyer]})
+    deploy.rejectSelling(1, {'from': accounts[seller]})
+    assert deploy.getWithdrawalBuyer({'from': accounts[buyer]}) == amount + deploy.exactProduct(agreements_number)[1] 
+'''DOESN'T WORK'''
+def test_rejectSelling_dealEnded(deploy):
+    '''test if the deal has ended after rejectSelling'''
+    deploy.rejectSelling(1, {'from': accounts[seller]})
+    assert deploy.exactProduct(1)[5] == True    
 
 
 
