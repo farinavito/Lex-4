@@ -100,6 +100,37 @@ def test_buyProduct_fail_requirement(deploy):
     except Exception as e:
         assert e.message[50:] == "You haven't sent ether"
 
+def test_buyProduct_event_id(deploy):
+    '''check if the id in the emitted event is correct when a new agreement is created'''
+    function_initialize = deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert function_initialize.events[0][0]['productId'] == 2
+
+def test_buyProduct_event_price(deploy):
+    '''check if the price in the emitted event is correct when a new agreement is created'''
+    function_initialize = deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert function_initialize.events[0][0]['productPrice'] == products_price
+
+def test_buyProduct_event_seller(deploy):
+    '''check if the seller in the emitted event is correct when a new agreement is created'''
+    function_initialize = deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert function_initialize.events[0][0]['productSeller'] == accounts[seller]
+
+def test_buyProduct_event_buyer(deploy):
+    '''check if the buyer in the emitted event is correct when a new agreement is created'''
+    function_initialize = deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert function_initialize.events[0][0]['productBuyer'] == accounts[buyer]
+
+def test_buyProduct_event_deadline(deploy):
+    '''check if the productDeadline in the emitted event is correct when a new agreement is created'''
+    function_initialize = deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert function_initialize.events[0][0]['productDeadline'] == now + 2419200 + 9
+
+def test_buyProduct_event_productDealEnded(deploy):
+    '''check if the productDealEnded in the emitted event is correct when a new agreement is created'''
+    function_initialize = deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert function_initialize.events[0][0]['productDealEnded'] == False 
+
+
 
 
 '''TESTING BUYERPRODUCTS'''

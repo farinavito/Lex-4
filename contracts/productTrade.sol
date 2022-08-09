@@ -77,9 +77,7 @@ contract TradeV1 {
         address productSeller,
         address productBuyer,
         uint256 productDeadline,
-        bool productDealEnded,
-        uint256 productBuyerApproves,
-        uint256 productSellerApproves
+        bool productDealEnded
     );
 
     /// @notice emitting an event fo notifying the user
@@ -120,9 +118,7 @@ contract TradeV1 {
             newProduct.seller,
             newProduct.buyer, 
             newProduct.deadline,
-            newProduct.dealEnded,
-            newProduct.buyerApproves,
-            newProduct.sellerApproves
+            newProduct.dealEnded
         );
     }
 
