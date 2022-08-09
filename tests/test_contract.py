@@ -171,13 +171,31 @@ def test_buyerProducts_2(deploy):
     '''check if the mapping buyerProducts emits correct productId for the second element'''
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     assert deploy.buyerProducts(accounts[buyer], 1) == 2
-@pytest.mark.aaa
+
 def test_buyerProducts_3(deploy):
     '''check if the mapping buyerProducts emits correct productId for the third element'''
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     assert deploy.buyerProducts(accounts[buyer], 2) == 3
 
+
+'''TESTING SELLERPRODUCTS'''
+
+@pytest.mark.aaa
+def test_sellerProducts(deploy):
+    '''check if the mapping buyerProducts emits correct productId for the first element'''
+    assert deploy.sellerProducts(accounts[seller], 0) == 1
+@pytest.mark.aaa
+def test_sellerProducts_2(deploy):
+    '''check if the mapping buyerProducts emits correct productId for the second element'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.sellerProducts(accounts[seller], 1) == 2
+@pytest.mark.aaa
+def test_sellerProducts_3(deploy):
+    '''check if the mapping buyerProducts emits correct productId for the third element'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.sellerProducts(accounts[seller], 2) == 3
 
 '''TESTING BUYERPRODUCTS'''
 
