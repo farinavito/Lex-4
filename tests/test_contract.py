@@ -131,7 +131,17 @@ def test_buyProduct_event_productDealEnded(deploy):
     assert function_initialize.events[0][0]['productDealEnded'] == False 
 
 
+'''TESTING NUMPRODUCT'''
 
+
+def test_numProduct(deploy):
+    '''test if the numProduct is 1, due to creating an agreement in the fixture'''
+    assert deploy.numProduct() == 1
+
+def test_numProduct_2(deploy):
+    '''test if the numProduct is 2, due to creating an agreement in the fixture'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.numProduct() == 2
 
 '''TESTING BUYERPRODUCTS'''
 
