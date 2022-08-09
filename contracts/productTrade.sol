@@ -39,7 +39,7 @@ contract TradeV1 {
     uint8 internal locked = 1;
 
     /// @notice Used to increase the id of the agreements in the "buyProduct" function
-    uint256 public numProduct = 1;
+    uint256 public numProduct = 0;
 
     /// @notice Returning the total amount of eth that was used for buying products
     uint256 public totalEtherTraded;
