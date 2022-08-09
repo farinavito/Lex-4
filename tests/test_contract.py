@@ -92,6 +92,14 @@ def test_buyProduct_sellerProducts(deploy):
     '''test if the sellerproducts mapping is correctly changed'''
     assert deploy.sellerProducts(accounts[seller], 0) == agreements_number
 
+def test_buyProduct_fail_requirement(deploy):
+    '''test if the buyProduct fails, because the msg.value isn't larger than 0'''
+    try:
+        deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': 0})
+        pytest.fail("The try-except concept has failed in test_buyProduct_fail_requirement")
+    except Exception as e:
+        assert e.message[50:] == "You haven't sent ether"
+
 
 
 '''TESTING BUYERPRODUCTS'''
