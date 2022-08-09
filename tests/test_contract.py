@@ -371,12 +371,43 @@ def test_sellerTicksNo_third_requirement_fails(deploy):
     except Exception as e:
         assert e.message[50:] == "The status is already set to No"
 
-def test_sellerTicksyes_increment_ticks(deploy):
+def test_sellerTicksNo_increment_ticks(deploy):
     '''test if the ticks do increment'''
     deploy.sellerTicksYes(1, {'from': accounts[seller]})
     deploy.sellerTicksNo(1, {'from': accounts[seller]})
     assert deploy.exactProduct(agreements_number)[7] == status_no
 
+
+'''TESTING FORCEDENDDEAL'''
+
+
+def test_forcedEndDeal_first_requirement_fail(deploy):
+    '''test if the first requirement fails'''
+    try:
+        deploy.forcedEndDeal(1, {'from': accounts[buyer]})
+        pytest.fail("The try-except concept has failed in test_forcedEndDeal_first_requirement_fail")
+    except Exception as e:
+        assert e.message[50:] == "You aren't the seller of this product"
+
+def test_forcedEndDeal_second_requirement_fails(deploy):
+    '''test if the second requirement works as planned'''
+    try:
+        chain = Chain()
+        chain.sleep(604800 + now + 1000000000)
+        deploy.forcedEndDeal(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_forcedEndDeal_second_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "The deadline has expired"
+
+'''DOESN'T WORK'''
+def test_forcedEndDeal_third_requirement_fails(deploy):
+    '''test if the third requirement works as planned'''
+    deploy.payOut(1, {'from': accounts[seller]})
+    try:
+        deploy.forcedEndDeal(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_forcedEndDeal_third_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "The deadline has already ended"
 
 '''TESTING BUYERPRODUCTS'''
 
