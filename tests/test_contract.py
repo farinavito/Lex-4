@@ -234,6 +234,40 @@ def test_rejectSelling_dealEnded(deploy):
     assert deploy.exactProduct(1)[5] == True    
 
 
+'''TESTING BUYERTICKSYES'''
+
+
+def test_buyerTicksYes_first_requirement_fails(deploy):
+    '''test if the first requirement works as planned'''
+    try:
+        chain = Chain()
+        chain.sleep(604800 + now + 1000000000)
+        deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+        pytest.fail("The try-except concept has failed in test_buyerTicksYes_first_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "The changing status deadline has expired"
+
+def test_buyerTicksYes_second_requirement_fails(deploy):
+    '''test if the second requirement works as planned'''
+    try:
+        deploy.buyerTicksYes(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_buyerTicksYes_second_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "You are not the product's buyer"
+
+def test_buyerTicksYes_third_requirement_fails(deploy):
+    '''test if the third requirement works as planned'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    try:
+        deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+        pytest.fail("The try-except concept has failed in test_buyerTicksYes_third_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "The status is already set to Yes"
+
+def test_buyerTicksyes_increment_ticks(deploy):
+    '''test if the ticks do increment'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    assert deploy.exactProduct(agreements_number)[6] == status_yes
 
 '''TESTING BUYERPRODUCTS'''
 
