@@ -146,10 +146,19 @@ def test_numProduct_2(deploy):
 
 '''TESTING TOTALETHERTRADED'''
 
-@pytest.mark.aaa
+
 def test_totalEtherTraded(deploy):
     '''test of the totalEtherTraded is initialized to 0'''
     assert deploy.totalEtherTraded() == 0
+
+
+'''TESTING TOTALETHERBURNT'''
+
+@pytest.mark.aaa
+def test_totalEtherBurnt(deploy):
+    '''test of the totalEtherTraded is initialized to 0'''
+    assert deploy.totalEtherBurnt() == 0
+
 
 '''TESTING BUYERPRODUCTS'''
 
