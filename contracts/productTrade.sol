@@ -282,4 +282,14 @@ contract TradeV1 {
         }
     }
 
+    /// @notice Return the withdrawal amount of the agreement's signee
+    function getWithdrawalBuyer() external view returns(uint256){
+        return withdraw_buyer[msg.sender];
+    }
+
+    /// @notice Return the withdrawal amount of the agreement's receiver
+    function getWithdrawalSeller() external view returns(uint256){
+        return withdraw_seller[msg.sender];
+    }
+
 }
