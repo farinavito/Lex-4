@@ -143,6 +143,14 @@ def test_numProduct_2(deploy):
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     assert deploy.numProduct() == 2
 
+
+'''TESTING TOTALETHERTRADED'''
+
+@pytest.mark.aaa
+def test_totalEtherTraded(deploy):
+    '''test of the totalEtherTraded is initialized to 0'''
+    assert deploy.totalEtherTraded() == 0
+
 '''TESTING BUYERPRODUCTS'''
 
 
