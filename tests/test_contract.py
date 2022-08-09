@@ -181,21 +181,59 @@ def test_buyerProducts_3(deploy):
 
 '''TESTING SELLERPRODUCTS'''
 
-@pytest.mark.aaa
+
 def test_sellerProducts(deploy):
     '''check if the mapping buyerProducts emits correct productId for the first element'''
     assert deploy.sellerProducts(accounts[seller], 0) == 1
-@pytest.mark.aaa
+
 def test_sellerProducts_2(deploy):
     '''check if the mapping buyerProducts emits correct productId for the second element'''
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     assert deploy.sellerProducts(accounts[seller], 1) == 2
-@pytest.mark.aaa
+
 def test_sellerProducts_3(deploy):
     '''check if the mapping buyerProducts emits correct productId for the third element'''
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
     assert deploy.sellerProducts(accounts[seller], 2) == 3
+
+
+'''TESTING REJECTSELLING'''  
+
+'''DOESN'T WORK'''
+
+def test_rejectSelling_first_reuqirement_fail(deploy):
+    '''test if the first requirement fails'''
+    deploy.payOut(1, {'from': accounts[seller]})
+    try:
+        chain = Chain()
+        chain.sleep(604800 + now + 1000000000)
+        deploy.rejectSelling(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_rejectSelling_first_reuqirement_fail")
+    except Exception as e:
+        assert e.message[50:] == "The deal has already ended"
+
+def test_rejectSelling_second_reuqirement_fail(deploy):
+    '''test if the second requirement fails'''
+    try:
+        chain = Chain()
+        chain.sleep(604800 + now + 1000000000)
+        deploy.rejectSelling(1, {'from': accounts[buyer]})
+        pytest.fail("The try-except concept has failed in test_rejectSelling_second_reuqirement_fail")
+    except Exception as e:
+        assert e.message[50:] == "You aren't the seller of this product"
+@pytest.mark.aaa
+def test_rejectSelling_second_reuqirement_fail(deploy):
+    '''test if the second requirement fails'''
+    try:
+        chain = Chain()
+        chain.sleep(604800 + now + 1000000000)
+        deploy.rejectSelling(1, {'from': accounts[buyer]})
+        pytest.fail("The try-except concept has failed in test_rejectSelling_second_reuqirement_fail")
+    except Exception as e:
+        assert e.message[50:] == "You aren't the seller of this product"
+
+
 
 '''TESTING BUYERPRODUCTS'''
 
