@@ -83,3 +83,18 @@ def test_buyProduct_buyerApproves(deploy):
 def test_buyProduct_sellerApproves(deploy):
     '''test if the sellerApproves of the agreement is setted to false'''
     assert deploy.exactProduct(agreements_number)[7] == status_no
+
+def test_buyProduct_buyerProducts(deploy):
+    '''test if the buyerproducts mapping is correctly changed'''
+    assert deploy.buyerProducts(accounts[buyer], 0) == agreements_number
+
+def test_buyProduct_sellerProducts(deploy):
+    '''test if the sellerproducts mapping is correctly changed'''
+    assert deploy.sellerProducts(accounts[seller], 0) == agreements_number
+
+
+
+'''TESTING BUYERPRODUCTS'''
+
+
+'''TESTING SELLERPRODUCTS'''
