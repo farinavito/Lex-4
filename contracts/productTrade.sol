@@ -197,7 +197,7 @@ contract TradeV1 {
         //check if the deadline + 1 week hasn't pass
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The changing status deadline has expired");
         //check if the function's caller is the product's seller
-        require(exactProduct[_id].seller == msg.sender, "You are not the product's buyer");
+        require(exactProduct[_id].seller == msg.sender, "You are not the product's seller");
         //check if the function's status isn't already yes
         require(exactProduct[_id].sellerApproves != 2, "The status is already set to Yes");
         //if the ticked status is 1, increase it by 1 (2 means yes)
@@ -212,7 +212,7 @@ contract TradeV1 {
         //check if the deadline + 1 week hasn't pass
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The changing status deadline has expired");
         //check if the function's caller is the product's seller
-        require(exactProduct[_id].seller == msg.sender, "You are not the product's buyer");
+        require(exactProduct[_id].seller == msg.sender, "You are not the product's seller");
         //check if the function's status isn't already no
         require(exactProduct[_id].sellerApproves != 1, "The status is already set to No");
         //if the ticked status is 2, decrease it by 1 (1 means no)
