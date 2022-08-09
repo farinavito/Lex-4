@@ -409,6 +409,63 @@ def test_forcedEndDeal_third_requirement_fails(deploy):
     except Exception as e:
         assert e.message[50:] == "The deadline has already ended"
 
+def test_forcedEndDeal_buyer_seller_no(deploy):
+    '''test if the transaction is reverted, because the buyer and the seller didn't ticked'''
+    try:
+        deploy.forcedEndDeal(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_forcedEndDeal_buyer_seller_no")
+    except Exception as e:
+        assert e.message[50:] == "Both seller and the buyer have to approve"
+
+def test_forcedEndDeal_seller_no(deploy):
+    '''test if the transaction is reverted, because the seller didn't ticked'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    try:
+        deploy.forcedEndDeal(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_forcedEndDeal_buyer_seller_no")
+    except Exception as e:
+        assert e.message[50:] == "Both seller and the buyer have to approve"
+
+def test_forcedEndDeal_buyer_seller_no(deploy):
+    '''test if the transaction is reverted, because the buyer didn't ticked'''
+    deploy.sellerTicksYes(1, {'from': accounts[seller]})
+    try:
+        deploy.forcedEndDeal(1, {'from': accounts[seller]})
+        pytest.fail("The try-except concept has failed in test_forcedEndDeal_buyer_seller_no")
+    except Exception as e:
+        assert e.message[50:] == "Both seller and the buyer have to approve"
+
+def test_forcedEndDeal_withdraw_seller(deploy):
+    '''test if the seller gets back the price'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    deploy.sellerTicksYes(1, {'from': accounts[seller]})
+    amount = deploy.getWithdrawalSeller({'from': accounts[seller]})
+    deploy.forcedEndDeal(1, {'from': accounts[seller]})
+    assert deploy.getWithdrawalSeller({'from': accounts[seller]}) == amount + deploy.exactProduct(agreements_number)[1]
+
+def test_forcedEndDeal_totalEtherTraded(deploy):
+    '''test if the totalEtherTraded increases'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    deploy.sellerTicksYes(1, {'from': accounts[seller]})
+    amount = deploy.totalEtherTraded()
+    deploy.forcedEndDeal(1, {'from': accounts[seller]})
+    assert deploy.totalEtherTraded() == amount + deploy.totalEtherTraded()
+
+def test_forcedEndDeal_totalEtherTraded(deploy):
+    '''test if the totalEtherTraded increases'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    deploy.sellerTicksYes(1, {'from': accounts[seller]})
+    amount = deploy.totalEtherTraded()
+    deploy.forcedEndDeal(1, {'from': accounts[seller]})
+    assert deploy.totalEtherTraded() == amount + deploy.totalEtherTraded()
+'''DOESN'T WORK'''
+def test_forcedEndDeal_dealEnded(deploy):
+    '''test if the dealEnded is set to true'''
+    deploy.buyerTicksYes(1, {'from': accounts[buyer]})
+    deploy.sellerTicksYes(1, {'from': accounts[seller]})
+    deploy.forcedEndDeal(1, {'from': accounts[seller]})
+    assert deploy.exactProduct(agreements_number)[5] == True
+
 '''TESTING BUYERPRODUCTS'''
 
 
