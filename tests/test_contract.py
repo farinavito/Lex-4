@@ -154,10 +154,29 @@ def test_totalEtherTraded(deploy):
 
 '''TESTING TOTALETHERBURNT'''
 
-@pytest.mark.aaa
+
 def test_totalEtherBurnt(deploy):
     '''test of the totalEtherTraded is initialized to 0'''
     assert deploy.totalEtherBurnt() == 0
+
+
+'''TESTING BUYERPRODUCTS'''
+
+
+def test_buyerProducts(deploy):
+    '''check if the mapping buyerProducts emits correct productId for the first element'''
+    assert deploy.buyerProducts(accounts[buyer], 0) == 1
+
+def test_buyerProducts_2(deploy):
+    '''check if the mapping buyerProducts emits correct productId for the second element'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.buyerProducts(accounts[buyer], 1) == 2
+@pytest.mark.aaa
+def test_buyerProducts_3(deploy):
+    '''check if the mapping buyerProducts emits correct productId for the third element'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.buyerProducts(accounts[buyer], 2) == 3
 
 
 '''TESTING BUYERPRODUCTS'''
