@@ -590,9 +590,34 @@ def test_getWithdrawalSeller_initialization(deploy, users):
     '''test if the getWithdrawalSeller returns 0 when initialized'''
     assert deploy.getWithdrawalSeller({'from': accounts[users]}) == 0
 
+
 '''TESTING BUYERPRODUCTS'''
 
+
+def test_buyerProducts_after_initialization(deploy):
+    '''test if the buyerproducts mapping is correctly changed'''
+    assert deploy.buyerProducts(accounts[buyer], 0) == agreements_number
+
+@pytest.mark.parametrize("not_buyer", [2, 3, 4, 5, 6, 7, 8, 9])
+def test_buyerProducts_after_initialization_2(deploy, not_buyer):
+    '''test if the buyerproducts mapping is correctly changed'''
+    try:
+        for num in range(1, 5):
+            assert deploy.buyerProducts(accounts[not_buyer], num) == 0
+            pytest.fail("The try-except concept has failed in test_buyerProducts_after_initialization_2")
+    except Exception as e:
+        assert e.message[50:] == ""
+@pytest.mark.aaa
+def test_buyerProducts_new_id(deploy):
+    '''check if the buyerProducts increases the id'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.buyerProducts(accounts[buyer], 1) == 2
+
+
+
 '''TESTING SELLERPRODUCTS'''
+
+
 
 '''TESTING WITHDRAWASTHEBUYER'''
 
