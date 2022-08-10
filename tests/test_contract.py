@@ -545,7 +545,7 @@ def test_payout_buyer_status_yes_change_status(deploy, buyer_or_seller):
     deploy.buyerTicksYes(1, {'from': accounts[buyer]})
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.exactProduct(agreements_number)[5] == True
-@pytest.mark.aaa
+
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_both_status_yes_withdraw_seller(deploy, buyer_or_seller):
     '''test if the seller gets the product's cost'''
@@ -554,7 +554,7 @@ def test_payout_both_status_yes_withdraw_seller(deploy, buyer_or_seller):
     amount = deploy.getWithdrawalSeller({'from': accounts[seller]})
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.getWithdrawalSeller({'from': accounts[seller]}) == amount + deploy.exactProduct(agreements_number)[1]
-@pytest.mark.aaa
+
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_both_status_yes_totalEtherTraded(deploy, buyer_or_seller):
     '''test if the totalEtherTraded increases'''
@@ -564,7 +564,6 @@ def test_payout_both_status_yes_totalEtherTraded(deploy, buyer_or_seller):
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.totalEtherTraded() == amount + deploy.exactProduct(agreements_number)[1]
 '''DOESN'T WORK'''
-@pytest.mark.aaa
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_both_status_yes_change_status(deploy, buyer_or_seller):
     '''test if the product's status is set to True'''
@@ -573,7 +572,21 @@ def test_payout_both_status_yes_change_status(deploy, buyer_or_seller):
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.exactProduct(agreements_number)[5] == True
 
+
+'''TESTING GETWITHDRAWALBUYER'''
+
+@pytest.mark.aaa
+@pytest.mark.parametrize("users", [1, 2, 3, 4, 5, 6, 7, 8, 9])
+def test_getWithdrawalBuyer_initialization(deploy, users):
+    '''test if the getWithdrawalBuyer returns 0 when initialized'''
+    assert deploy.getWithdrawalBuyer({'from': accounts[users]}) == 0
+
+'''TESTING GETWITHDRAWALSELLER'''
+
 '''TESTING BUYERPRODUCTS'''
 
-
 '''TESTING SELLERPRODUCTS'''
+
+'''TESTING WITHDRAWASTHEBUYER'''
+
+'''TESTING WITHDRAWASTHESELLER'''
