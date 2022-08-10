@@ -9,6 +9,7 @@ from brownie.network.state import Chain
 #new agreement
 buyer = 1
 seller = 9
+not_seller_not_buyer = 2
 amount_sent = 10**10
 products_price = 100
 agreement_duration = 2629743 + 1749185494
@@ -465,6 +466,39 @@ def test_forcedEndDeal_dealEnded(deploy):
     deploy.sellerTicksYes(1, {'from': accounts[seller]})
     deploy.forcedEndDeal(1, {'from': accounts[seller]})
     assert deploy.exactProduct(agreements_number)[5] == True
+
+
+'''TESTING PAYOUT'''
+
+
+def test_payOut_first_requirement_fails(deploy):
+    '''test if the first requirement works'''
+    try:
+        deploy.payOut(1, {'from': accounts[not_seller_not_buyer]})
+        pytest.fail("The try-except concept has failed in test_payOut_first_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "You aren't the seller or the buyer of this product"
+'''DOESN'T WORK'''
+@pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
+def test_payOut_second_requirement_fails(deploy, buyer_or_seller):
+    '''test if the second requirement works'''
+    deploy.payOut(1, {'from': accounts[buyer_or_seller]})
+    try:
+        deploy.payOut(1, {'from': accounts[buyer_or_seller]})
+        pytest.fail("The try-except concept has failed in test_payOut_second_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "This deal was already paid out"
+
+@pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
+def test_forcedEndDeal_third_requirement_fails(deploy, buyer_or_seller):
+    '''test if the third requirement works'''
+    try:
+        chain = Chain()
+        chain.sleep(604800 + now + 1000000000)
+        deploy.payOut(1, {'from': accounts[buyer_or_seller]})
+        pytest.fail("The try-except concept has failed in test_payOut_third_requirement_fails")
+    except Exception as e:
+        assert e.message[50:] == "The deadline has expired"
 
 '''TESTING BUYERPRODUCTS'''
 
