@@ -131,7 +131,7 @@ contract TradeV1 {
         //return the price of the product to the buyer
         withdraw_buyer[exactProduct[_id].buyer] += exactProduct[_id].price;
         //end the deal for the product
-        exactProduct[_id].dealEnded == true;
+        exactProduct[_id].dealEnded = true;
     }
 
     /// @notice The buyer withdrawing the money that belongs to his/her address
@@ -239,7 +239,7 @@ contract TradeV1 {
             //increase the eth used 
             totalEtherTraded += exactProduct[_id].price;
             //end the deal for the product
-            exactProduct[_id].dealEnded == true;
+            exactProduct[_id].dealEnded = true;
         } else {
             revert("Both seller and the buyer have to approve");
         }
@@ -258,19 +258,19 @@ contract TradeV1 {
             //transfer price of the product to the buyer
             withdraw_buyer[exactProduct[_id].buyer] += exactProduct[_id].price;
             //end the deal for the product
-            exactProduct[_id].dealEnded == true;
+            exactProduct[_id].dealEnded = true;
         //if buyer's status is No and seller's is Yes
         } else if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 2){
             //burn the eth
             totalEtherBurnt += exactProduct[_id].price;
             //end the deal for the product
-            exactProduct[_id].dealEnded == true;
+            exactProduct[_id].dealEnded = true;
         //if buyer's status is Yes and seller's is No
         } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 1){
             //burn the eth
             totalEtherBurnt += exactProduct[_id].price;
             //end the deal for the product
-            exactProduct[_id].dealEnded == true;
+            exactProduct[_id].dealEnded = true;
         //if both statuses are Yes
         } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
             //transfer price of the product to the seller
@@ -278,7 +278,7 @@ contract TradeV1 {
             //increase the eth used 
             totalEtherTraded += exactProduct[_id].price;
             //end the deal for the product
-            exactProduct[_id].dealEnded == true;
+            exactProduct[_id].dealEnded = true;
         }
     }
 
