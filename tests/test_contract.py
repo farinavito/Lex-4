@@ -596,4 +596,14 @@ def test_getWithdrawalSeller_initialization(deploy, users):
 
 '''TESTING WITHDRAWASTHEBUYER'''
 
+@pytest.mark.aaa
+@pytest.mark.parametrize("users", [1, 2, 3, 4, 5, 6, 7, 8, 9])
+def test_withdrawAsTheBuyer_first_reqirements(deploy, users):
+    '''test if the first requirement works'''
+    try:
+        deploy.withdrawAsTheBuyer({'from': accounts[users]})
+        pytest.fail("The try-except concept has failed in test_withdrawAsTheBuyer_first_reqirements")
+    except Exception as e:
+        assert e.message[50:] == "There aren't any funds to withdraw"
+
 '''TESTING WITHDRAWASTHESELLER'''
