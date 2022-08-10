@@ -499,6 +499,19 @@ def test_forcedEndDeal_third_requirement_fails(deploy, buyer_or_seller):
         pytest.fail("The try-except concept has failed in test_payOut_third_requirement_fails")
     except Exception as e:
         assert e.message[50:] == "The deadline has expired"
+@pytest.mark.aaa
+@pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
+def test_payout_both_status_no_withdraw_buyer(deploy, buyer_or_seller):
+    '''test if the buyer gets back the product's cost'''
+    amount = deploy.getWithdrawalBuyer({'from': accounts[buyer]})
+    deploy.payOut(1, {'from': accounts[buyer_or_seller]})
+    assert deploy.getWithdrawalBuyer({'from': accounts[buyer]}) == amount + deploy.exactProduct(agreements_number)[1]
+'''DOESN'T WORK'''
+@pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
+def test_payout_both_status_no_change_status(deploy, buyer_or_seller):
+    '''test if the product's status is set to True'''
+    deploy.payOut(1, {'from': accounts[buyer_or_seller]})
+    assert deploy.exactProduct(agreements_number)[5] == True
 
 '''TESTING BUYERPRODUCTS'''
 

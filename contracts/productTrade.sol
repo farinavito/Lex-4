@@ -255,8 +255,8 @@ contract TradeV1 {
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The deadline has expired");
         //if both statuses are NO
         if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 1){
-            //transfer price of the product to the seller
-            withdraw_buyer[exactProduct[_id].seller] += exactProduct[_id].price;
+            //transfer price of the product to the buyer
+            withdraw_buyer[exactProduct[_id].buyer] += exactProduct[_id].price;
             //end the deal for the product
             exactProduct[_id].dealEnded == true;
         //if buyer's status is No and seller's is Yes
