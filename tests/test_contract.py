@@ -575,13 +575,20 @@ def test_payout_both_status_yes_change_status(deploy, buyer_or_seller):
 
 '''TESTING GETWITHDRAWALBUYER'''
 
-@pytest.mark.aaa
+
 @pytest.mark.parametrize("users", [1, 2, 3, 4, 5, 6, 7, 8, 9])
 def test_getWithdrawalBuyer_initialization(deploy, users):
     '''test if the getWithdrawalBuyer returns 0 when initialized'''
     assert deploy.getWithdrawalBuyer({'from': accounts[users]}) == 0
 
+
 '''TESTING GETWITHDRAWALSELLER'''
+
+
+@pytest.mark.parametrize("users", [1, 2, 3, 4, 5, 6, 7, 8, 9])
+def test_getWithdrawalSeller_initialization(deploy, users):
+    '''test if the getWithdrawalSeller returns 0 when initialized'''
+    assert deploy.getWithdrawalSeller({'from': accounts[users]}) == 0
 
 '''TESTING BUYERPRODUCTS'''
 
