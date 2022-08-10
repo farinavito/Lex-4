@@ -596,7 +596,7 @@ def test_getWithdrawalSeller_initialization(deploy, users):
 
 '''TESTING WITHDRAWASTHEBUYER'''
 
-@pytest.mark.aaa
+
 @pytest.mark.parametrize("users", [1, 2, 3, 4, 5, 6, 7, 8, 9])
 def test_withdrawAsTheBuyer_first_reqirements(deploy, users):
     '''test if the first requirement works'''
@@ -605,5 +605,34 @@ def test_withdrawAsTheBuyer_first_reqirements(deploy, users):
         pytest.fail("The try-except concept has failed in test_withdrawAsTheBuyer_first_reqirements")
     except Exception as e:
         assert e.message[50:] == "There aren't any funds to withdraw"
+
+def test_withdrawAsTheBuyer_first_reqirements_2(deploy):
+    '''test if the first requirement works'''
+    deploy.payOut(1, {'from': accounts[buyer]})
+    deploy.withdrawAsTheBuyer({'from': accounts[buyer]})
+    try:
+        deploy.withdrawAsTheBuyer({'from': accounts[buyer]})
+        pytest.fail("The try-except concept has failed in test_withdrawAsTheBuyer_first_reqirements_2")
+    except Exception as e:
+        assert e.message[50:] == "There aren't any funds to withdraw"
+
+def test_withdrawAsTheBuyer_send_amount(deploy):
+    '''test if the withdrawals are sent to the caller'''
+    buyers_balance = accounts[buyer].balance()
+    deploy.payOut(1, {'from': accounts[buyer]})
+    deploy.withdrawAsTheBuyer({'from': accounts[buyer]})
+    assert accounts[buyer].balance() == buyers_balance + deploy.exactProduct(agreements_number)[1]
+
+def test_withdrawAsTheBuyer_amount_to_0(deploy):
+    '''test if the withdrawAsTheBuyer is reduced to 0'''
+    deploy.payOut(1, {'from': accounts[buyer]})
+    deploy.withdrawAsTheBuyer({'from': accounts[buyer]})
+    assert deploy.getWithdrawalBuyer({'from': accounts[buyer]}) == 0
+
+def test_withdrawAsTheBuyer_emit_event(deploy):
+    '''test if the withdrawAsTheBuyeremits an event'''
+    deploy.payOut(1, {'from': accounts[buyer]})
+    function_initialize =deploy.withdrawAsTheBuyer({'from': accounts[buyer]})
+    assert function_initialize.events[0][0]['message'] == "Withdrawal has been transfered"
 
 '''TESTING WITHDRAWASTHESELLER'''
