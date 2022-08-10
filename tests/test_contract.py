@@ -607,7 +607,7 @@ def test_buyerProducts_after_initialization_2(deploy, not_buyer):
             pytest.fail("The try-except concept has failed in test_buyerProducts_after_initialization_2")
     except Exception as e:
         assert e.message[50:] == ""
-@pytest.mark.aaa
+
 def test_buyerProducts_new_id(deploy):
     '''check if the buyerProducts increases the id'''
     deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
@@ -617,6 +617,25 @@ def test_buyerProducts_new_id(deploy):
 
 '''TESTING SELLERPRODUCTS'''
 
+@pytest.mark.aaa
+def test_sellerProducts_after_initialization(deploy):
+    '''test if the sellerproducts mapping is correctly changed'''
+    assert deploy.sellerProducts(accounts[seller], 0) == agreements_number
+@pytest.mark.aaa
+@pytest.mark.parametrize("not_seller", [2, 3, 4, 5, 6, 7, 8, 9])
+def test_sellerProducts_after_initialization_2(deploy, not_seller):
+    '''test if the sellerProducts mapping is correctly changed'''
+    try:
+        for num in range(1, 5):
+            assert deploy.sellerProducts(accounts[not_seller], num) == 0
+            pytest.fail("The try-except concept has failed in test_sellerProducts_after_initialization_2")
+    except Exception as e:
+        assert e.message[50:] == ""
+@pytest.mark.aaa
+def test_sellerProducts_new_id(deploy):
+    '''check if the sellerProducts increases the id'''
+    deploy.buyProduct(accounts[seller], {'from': accounts[buyer], 'value': products_price})
+    assert deploy.sellerProducts(accounts[seller], 1) == 2
 
 
 '''TESTING WITHDRAWASTHEBUYER'''
