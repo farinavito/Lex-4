@@ -201,7 +201,7 @@ def test_sellerProducts_3(deploy):
 
 '''TESTING REJECTSELLING'''  
 
-'''DOESN'T WORK'''
+
 def test_rejectSelling_first_reuqirement_fail(deploy):
     '''test if the first requirement fails'''
     deploy.payOut(1, {'from': accounts[seller]})
@@ -228,7 +228,7 @@ def test_rejectSelling_withdraw_buyer(deploy):
     amount = deploy.getWithdrawalBuyer({'from': accounts[buyer]})
     deploy.rejectSelling(1, {'from': accounts[seller]})
     assert deploy.getWithdrawalBuyer({'from': accounts[buyer]}) == amount + deploy.exactProduct(agreements_number)[1] 
-'''DOESN'T WORK'''
+
 def test_rejectSelling_dealEnded(deploy):
     '''test if the deal has ended after rejectSelling'''
     deploy.rejectSelling(1, {'from': accounts[seller]})
@@ -400,7 +400,6 @@ def test_forcedEndDeal_second_requirement_fails(deploy):
     except Exception as e:
         assert e.message[50:] == "The deadline has expired"
 
-'''DOESN'T WORK'''
 def test_forcedEndDeal_third_requirement_fails(deploy):
     '''test if the third requirement works as planned'''
     deploy.payOut(1, {'from': accounts[seller]})
@@ -459,7 +458,7 @@ def test_forcedEndDeal_totalEtherTraded(deploy):
     amount = deploy.totalEtherTraded()
     deploy.forcedEndDeal(1, {'from': accounts[seller]})
     assert deploy.totalEtherTraded() == amount + deploy.totalEtherTraded()
-'''DOESN'T WORK'''
+
 def test_forcedEndDeal_dealEnded(deploy):
     '''test if the dealEnded is set to true'''
     deploy.buyerTicksYes(1, {'from': accounts[buyer]})
@@ -478,7 +477,7 @@ def test_payOut_first_requirement_fails(deploy):
         pytest.fail("The try-except concept has failed in test_payOut_first_requirement_fails")
     except Exception as e:
         assert e.message[50:] == "You aren't the seller or the buyer of this product"
-'''DOESN'T WORK'''
+
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payOut_second_requirement_fails(deploy, buyer_or_seller):
     '''test if the second requirement works'''
@@ -507,7 +506,6 @@ def test_payout_both_status_no_withdraw_buyer(deploy, buyer_or_seller):
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.getWithdrawalBuyer({'from': accounts[buyer]}) == amount + deploy.exactProduct(agreements_number)[1]
 
-'''DOESN'T WORK'''
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_both_status_no_change_status(deploy, buyer_or_seller):
     '''test if the product's status is set to True'''
@@ -522,7 +520,6 @@ def test_payout_seller_status_yes_totalEtherBurnt(deploy, buyer_or_seller):
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.totalEtherBurnt() == amount + deploy.exactProduct(agreements_number)[1]
 
-'''DOESN'T WORK'''
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_seller_status_yes_change_status(deploy, buyer_or_seller):
     '''test if the product's status is set to True'''
@@ -538,7 +535,6 @@ def test_payout_buyer_status_yes_totalEtherBurnt(deploy, buyer_or_seller):
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.totalEtherBurnt() == amount + deploy.exactProduct(agreements_number)[1]
 
-'''DOESN'T WORK'''
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_buyer_status_yes_change_status(deploy, buyer_or_seller):
     '''test if the product's status is set to True'''
@@ -563,7 +559,7 @@ def test_payout_both_status_yes_totalEtherTraded(deploy, buyer_or_seller):
     deploy.sellerTicksYes(1, {'from': accounts[seller]})
     deploy.payOut(1, {'from': accounts[buyer_or_seller]})
     assert deploy.totalEtherTraded() == amount + deploy.exactProduct(agreements_number)[1]
-'''DOESN'T WORK'''
+
 @pytest.mark.parametrize("buyer_or_seller", [buyer, seller])
 def test_payout_both_status_yes_change_status(deploy, buyer_or_seller):
     '''test if the product's status is set to True'''
