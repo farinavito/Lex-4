@@ -138,7 +138,7 @@ contract TradeV2 {
     /// @notice The buyer sets the status to Yes
     function buyerTicksYes(uint256 _id) external {
         //check if the deadline + 1 week hasn't passed
-        require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The changing status deadline has expired");
+        require(exactProduct[_id].deadline >= block.timestamp, "The changing status deadline has expired");
         //check if the function's caller is the product's buyer
         require(exactProduct[_id].buyer == msg.sender, "You are not the product's buyer");
         //check if the function's status isn't already Yes
@@ -187,7 +187,7 @@ contract TradeV2 {
             //end the deal for the product
             exactProduct[_id].dealEnded = true;
         //if both statuses are Yes
-        } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
+        } else if (exactProduct[_id].buyerApproves == 2){
             //transfer price of the product to the seller
             sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
             //increase the eth used 
