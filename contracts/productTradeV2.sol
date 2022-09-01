@@ -84,7 +84,7 @@ contract TradeV2 {
     event NotifyUser(string message);
 
     /// @notice Buying a product
-    function buyProduct(address payable _seller, uint256 _productsPrice) external payable {
+    function buyProduct(address payable _seller, uint256 _productsPrice, uint256 _deadlinePeriod) external payable {
         //enough eth must be sent
         require(msg.value == _productsPrice, "You haven't sent enough ether");
         //increment the number of the id
@@ -99,8 +99,12 @@ contract TradeV2 {
         newProduct.seller = _seller;
         //storing the buyer's address
         newProduct.buyer = msg.sender;
-        //storing the deadline till which the product must be shipped
-        newProduct.deadline = block.timestamp + 2419200;
+        //storing the deadline till which the product must be received
+        if(_deadlinePeriod == 0){
+            newProduct.deadline = block.timestamp + 2419200;
+        } else {
+            newProduct.deadline = block.timestamp + _deadlinePeriod;
+        }
         //initializing the variable that checks if the deal has ended to false
         newProduct.dealEnded = false;
         //initializing ticking status to 1 which means No, 2 means Yes
