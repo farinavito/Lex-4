@@ -18,7 +18,7 @@ contract TradeV2 {
 
     struct Product{
         //id of the product
-        uint256 id;
+        //uint256 id;
         //price of the product
         uint256 price;
         //seller's address where the eth will go
@@ -57,10 +57,7 @@ contract TradeV2 {
 
     /// @notice Saving the eth sent for the buyer to withdraw it
     mapping(address => uint256) private buyersAccount;
-/*
-    /// @notice Saving the eth sent for the seller to withdraw it
-    mapping(address => uint256) private sellersAccount;
-*/
+
     /// @notice Store the seller's eth balance
     mapping(address => uint256) private sellersBalance;
 
