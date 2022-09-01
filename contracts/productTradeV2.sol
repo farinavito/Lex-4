@@ -32,7 +32,7 @@ contract TradeV2 {
         //storing buyer's ticking status
         uint256 buyerApproves;
         //storing seller's ticking status
-        uint256 sellerApproves;
+        //uint256 sellerApproves;           we can remove this, because the seller can only sell items that he guarantees that he can deliver
     }
 
     /// @notice Using against re-entrancy
@@ -57,9 +57,12 @@ contract TradeV2 {
 
     /// @notice Saving the eth sent for the buyer to withdraw it
     mapping(address => uint256) private withdraw_buyer;
-
+/*
     /// @notice Saving the eth sent for the seller to withdraw it
     mapping(address => uint256) private withdraw_seller;
+*/
+    /// @notice Store the seller's eth balance
+    mapping(address => uint256) private sellersBalance;
 
     /// @notice A unique identifier of the agreement. The same as the id.
     mapping(uint256 => Product) public exactProduct;
@@ -106,7 +109,8 @@ contract TradeV2 {
         //initializing ticking status to 1 which means No, 2 means Yes
         newProduct.buyerApproves = 1;
         //initializing ticking status to 1 which means No, 2 means Yes
-        newProduct.sellerApproves = 1;
+        //newProduct.sellerApproves = 1;    seller should tick yes, otherwise he shouldn't sell it
+        newProduct.sellerApproves = 2;
         //storing the ids of the products and connecting them to msg.sender's address so we can display them to the frontend
         buyerProducts[msg.sender].push(numProduct);
         //storing the ids of the products and connecting them to _seller's address so we can display them to the frontend
@@ -121,6 +125,9 @@ contract TradeV2 {
             newProduct.dealEnded
         );
     }
+/*
+
+do we need this?
 
     ///@notice Rejecting selling the product by the seller
     function rejectSelling(uint256 _id) external {
@@ -133,7 +140,7 @@ contract TradeV2 {
         //end the deal for the product
         exactProduct[_id].dealEnded = true;
     }
-
+*/
     /// @notice The buyer withdrawing the money that belongs to his/her address
     function withdrawAsTheBuyer() external payable noReentrant {
         //checking if there are any funds left to withdraw by msg.sender
@@ -191,6 +198,9 @@ contract TradeV2 {
         //otherwise revert
         } else {revert();}
     }
+/*
+
+The seller ticks yes. If he doesn't want to, he shouldn't sell it
 
     /// @notice The seller sets the status to yes
     function sellerTicksYes(uint256 _id) external {
@@ -223,7 +233,7 @@ contract TradeV2 {
             revert();
         }
     }
-
+*/
     /// @notice The seller forces end of the deal before the deadline, when both parties ticked Yes
     function forcedEndDeal(uint256 _id) external {
         //only the seller can call this function
