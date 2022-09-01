@@ -85,7 +85,7 @@ contract TradeV2 {
 
     /// @notice Buying a product
     function buyProduct(address payable _seller, uint256 _productsPrice) external payable {
-        //eth must be sent
+        //enough eth must be sent
         require(msg.value == _productsPrice, "You haven't sent enough ether");
         //increment the number of the id
         numProduct++;
@@ -107,7 +107,6 @@ contract TradeV2 {
         newProduct.buyerApproves = 1;
         //initializing ticking status to 1 which means No, 2 means Yes
         //newProduct.sellerApproves = 1;    seller should tick yes, otherwise he shouldn't sell it
-        newProduct.sellerApproves = 2;
         //storing the ids of the products and connecting them to msg.sender's address so we can display them to the frontend
         buyerProducts[msg.sender].push(numProduct);
         //storing the ids of the products and connecting them to _seller's address so we can display them to the frontend
@@ -225,7 +224,8 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         //check if the deal has ended
         require(exactProduct[_id].dealEnded == false, "The deal has already ended");
         //check if seller's and buyer's statuses are yes
-        if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
+        //if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
+        if (exactProduct[_id].buyerApproves == 2){
             //transfer price of the product to the seller
             sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
             //increase the eth used 
@@ -245,24 +245,29 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         require(exactProduct[_id].dealEnded == false, "This deal was already paid out");
         //check if the deadline + 1 week is over
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The deadline has expired");
+        /*
         //if both statuses are NO
         if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 1){
             //transfer price of the product to the buyer
             buyersAccount[exactProduct[_id].buyer] += exactProduct[_id].price;
             //end the deal for the product
             exactProduct[_id].dealEnded = true;
+        */
         //if buyer's status is No and seller's is Yes
-        } else if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 2){
+        //if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 2){
+        if (exactProduct[_id].buyerApproves == 1){
             //burn the eth
             totalEtherBurnt += exactProduct[_id].price;
             //end the deal for the product
             exactProduct[_id].dealEnded = true;
+        /*
         //if buyer's status is Yes and seller's is No
         } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 1){
             //burn the eth
             totalEtherBurnt += exactProduct[_id].price;
             //end the deal for the product
             exactProduct[_id].dealEnded = true;
+        */
         //if both statuses are Yes
         } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
             //transfer price of the product to the seller
