@@ -84,9 +84,9 @@ contract TradeV2 {
     event NotifyUser(string message);
 
     /// @notice Buying a product
-    function buyProduct(address payable _seller) external payable {
+    function buyProduct(address payable _seller, uint256 _productsPrice) external payable {
         //eth must be sent
-        require(msg.value > 0, "You haven't sent ether");
+        require(msg.value == _productsPrice, "You haven't sent enough ether");
         //increment the number of the id
         numProduct++;
         //creating a new instance of a product
