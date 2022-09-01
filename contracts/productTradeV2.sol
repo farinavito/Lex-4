@@ -1,19 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.11;
 
-/*
-    - The buyer creates a new address and sends some eth to it. Preferably, by using tornado cash or any other way to fill it with eth without any backward connections
-    - The seller creates a new address for every transaction
-    - The seller tells the buyer to which address send the eth
-    - The buyer sends eth and seller's address to our sc
-
-    - Can we create a system where seller rejects if msg.value of the buyer is to low? 
-    Would it be better if the seller (or maybe even a buyer) initialize a struct with deadline, msg.value, identificator and closed arguments?
-    Maybe deadline should be by default 4weeks. 
-
-    buyerApproves, sellerApproves : 1 - no, 2 - yes
-*/
-
 contract TradeV2 {
 
     struct Product{
