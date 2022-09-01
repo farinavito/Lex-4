@@ -65,10 +65,10 @@ contract TradeV2 {
     mapping(uint256 => Product) public exactProduct;
 
     /// @notice Storing the id's of the products that the buyer has bought
-    mapping(address => uint[]) public buyerProducts;
+    mapping(address => uint[]) internal buyerProducts;
 
     /// @notice Storing the id's of the products of the same seller's address
-    mapping(address => uint[]) public sellerProducts;
+    mapping(address => uint[]) internal sellerProducts;
 
     /// @notice emitting an event when a product is created
     event ProductInfo(
@@ -302,6 +302,16 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
     /// @notice Return the withdrawal amount of the agreement's receiver
     function getWithdrawalSeller() external view returns(uint256){
         return sellersAccount[msg.sender];
+    }
+
+    /// @notice Return the ids that the buyer has bought it
+    function showBuyerProducts() external view returns(uint[] memory){
+        return buyerProducts[msg.sender];
+    }
+
+    /// @notice Return the ids that the seller has bought it
+    function showSellerProducts() external view returns(uint[] memory){
+        return sellerProducts[msg.sender];
     }
 
 }
