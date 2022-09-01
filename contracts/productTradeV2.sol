@@ -109,8 +109,6 @@ contract TradeV2 {
         newProduct.dealEnded = false;
         //initializing ticking status to 1 which means No, 2 means Yes
         newProduct.buyerApproves = 1;
-        //initializing ticking status to 1 which means No, 2 means Yes
-        //newProduct.sellerApproves = 1;    seller should tick yes, otherwise he shouldn't sell it
         //storing the ids of the products and connecting them to msg.sender's address so we can display them to the frontend
         buyerProducts[msg.sender].push(numProduct);
         //storing the ids of the products and connecting them to _seller's address so we can display them to the frontend
@@ -183,42 +181,7 @@ contract TradeV2 {
         //otherwise revert
         } else {revert();}
     }
-/*
 
-The seller ticks yes. If he doesn't want to, he shouldn't sell it
-
-    /// @notice The seller sets the status to yes
-    function sellerTicksYes(uint256 _id) external {
-        //check if the deadline + 1 week hasn't pass
-        require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The changing status deadline has expired");
-        //check if the function's caller is the product's seller
-        require(exactProduct[_id].seller == msg.sender, "You are not the product's seller");
-        //check if the function's status isn't already yes
-        require(exactProduct[_id].sellerApproves != 2, "The status is already set to Yes");
-        //if the ticked status is 1, increase it by 1 (2 means yes)
-        if (exactProduct[_id].sellerApproves == 1){
-            exactProduct[_id].sellerApproves += 1;
-        //otherwise revert
-        } else {revert();}
-    }
-
-    /// @notice The seller sets the status to No
-    function sellerTicksNo(uint256 _id) external {
-        //check if the deadline + 1 week hasn't pass
-        require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The changing status deadline has expired");
-        //check if the function's caller is the product's seller
-        require(exactProduct[_id].seller == msg.sender, "You are not the product's seller");
-        //check if the function's status isn't already no
-        require(exactProduct[_id].sellerApproves != 1, "The status is already set to No");
-        //if the ticked status is 2, decrease it by 1 (1 means no)
-        if (exactProduct[_id].sellerApproves == 2){
-            exactProduct[_id].sellerApproves -= 1;
-        //otherwise revert
-        } else {
-            revert();
-        }
-    }
-*/
     /// @notice The seller forces end of the deal before the deadline, when both parties ticked Yes
     function forcedEndDeal(uint256 _id) external {
         //only the seller can call this function
@@ -249,29 +212,12 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         require(exactProduct[_id].dealEnded == false, "This deal was already paid out");
         //check if the deadline + 1 week is over
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The deadline has expired");
-        /*
-        //if both statuses are NO
-        if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 1){
-            //transfer price of the product to the buyer
-            buyersAccount[exactProduct[_id].buyer] += exactProduct[_id].price;
-            //end the deal for the product
-            exactProduct[_id].dealEnded = true;
-        */
         //if buyer's status is No and seller's is Yes
-        //if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 2){
         if (exactProduct[_id].buyerApproves == 1){
             //burn the eth
             totalEtherBurnt += exactProduct[_id].price;
             //end the deal for the product
             exactProduct[_id].dealEnded = true;
-        /*
-        //if buyer's status is Yes and seller's is No
-        } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 1){
-            //burn the eth
-            totalEtherBurnt += exactProduct[_id].price;
-            //end the deal for the product
-            exactProduct[_id].dealEnded = true;
-        */
         //if both statuses are Yes
         } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
             //transfer price of the product to the seller
