@@ -122,22 +122,7 @@ contract TradeV2 {
             newProduct.dealEnded
         );
     }
-/*
 
-do we need this?
-
-    ///@notice Rejecting selling the product by the seller
-    function rejectSelling(uint256 _id) external {
-        //check if the product's deal has already ended
-        require(exactProduct[_id].dealEnded == false, "The deal has already ended");
-        //check if the seller is the correct one
-        require(exactProduct[_id].seller == msg.sender, "You aren't the seller of this product");
-        //return the price of the product to the buyer
-        buyersAccount[exactProduct[_id].buyer] += exactProduct[_id].price;
-        //end the deal for the product
-        exactProduct[_id].dealEnded = true;
-    }
-*/
     /// @notice The buyer withdrawing the money that belongs to his/her address
     function withdrawAsTheBuyer() external payable noReentrant {
         //checking if there are any funds left to withdraw by msg.sender
