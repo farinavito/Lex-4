@@ -56,10 +56,10 @@ contract TradeV2 {
     }
 
     /// @notice Saving the eth sent for the buyer to withdraw it
-    mapping(address => uint256) private withdraw_buyer;
+    mapping(address => uint256) private buyersAccount;
 /*
     /// @notice Saving the eth sent for the seller to withdraw it
-    mapping(address => uint256) private withdraw_seller;
+    mapping(address => uint256) private sellersAccount;
 */
     /// @notice Store the seller's eth balance
     mapping(address => uint256) private sellersBalance;
@@ -136,7 +136,7 @@ do we need this?
         //check if the seller is the correct one
         require(exactProduct[_id].seller == msg.sender, "You aren't the seller of this product");
         //return the price of the product to the buyer
-        withdraw_buyer[exactProduct[_id].buyer] += exactProduct[_id].price;
+        buyersAccount[exactProduct[_id].buyer] += exactProduct[_id].price;
         //end the deal for the product
         exactProduct[_id].dealEnded = true;
     }
@@ -144,13 +144,13 @@ do we need this?
     /// @notice The buyer withdrawing the money that belongs to his/her address
     function withdrawAsTheBuyer() external payable noReentrant {
         //checking if there are any funds left to withdraw by msg.sender
-        require(withdraw_buyer[msg.sender] > 0, "There aren't any funds to withdraw");	
+        require(buyersAccount[msg.sender] > 0, "There aren't any funds to withdraw");	
         //send the funds to msg.sender  	  
-        (bool sent, ) = msg.sender.call{value: withdraw_buyer[msg.sender]}("");
+        (bool sent, ) = msg.sender.call{value: buyersAccount[msg.sender]}("");
         //if the transaction fails, revert everything
         require(sent, "Failed to send Ether");
         //modify the mapping to 0
-        withdraw_buyer[msg.sender] = 0;
+        buyersAccount[msg.sender] = 0;
         //emit an event
         emit NotifyUser("Withdrawal has been transfered");
     }
@@ -158,13 +158,13 @@ do we need this?
     /// @notice The seller withdrawing the money that belongs to his/her address
     function withdrawAsTheSeller() external payable noReentrant {
         //checking if there are any funds left to withdraw by msg.sender
-        require(withdraw_seller[msg.sender] > 0, "There aren't any funds to withdraw");	  
+        require(sellersAccount[msg.sender] > 0, "There aren't any funds to withdraw");	  
         //send the funds to msg.sender 
-        (bool sent, ) = msg.sender.call{value: withdraw_seller[msg.sender]}("");
+        (bool sent, ) = msg.sender.call{value: sellersAccount[msg.sender]}("");
         //if the transaction fails, revert everything
         require(sent, "Failed to send Ether");
         //modify the mapping to 0
-        withdraw_seller[msg.sender] = 0;
+        sellersAccount[msg.sender] = 0;
         //emit an event
         emit NotifyUser("Withdrawal has been transfered");
     }
@@ -245,7 +245,7 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         //check if seller's and buyer's statuses are yes
         if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
             //transfer price of the product to the seller
-            withdraw_seller[exactProduct[_id].seller] += exactProduct[_id].price;
+            sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
             //increase the eth used 
             totalEtherTraded += exactProduct[_id].price;
             //end the deal for the product
@@ -266,7 +266,7 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         //if both statuses are NO
         if (exactProduct[_id].buyerApproves == 1 && exactProduct[_id].sellerApproves == 1){
             //transfer price of the product to the buyer
-            withdraw_buyer[exactProduct[_id].buyer] += exactProduct[_id].price;
+            buyersAccount[exactProduct[_id].buyer] += exactProduct[_id].price;
             //end the deal for the product
             exactProduct[_id].dealEnded = true;
         //if buyer's status is No and seller's is Yes
@@ -284,7 +284,7 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         //if both statuses are Yes
         } else if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
             //transfer price of the product to the seller
-            withdraw_seller[exactProduct[_id].seller] += exactProduct[_id].price;
+            sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
             //increase the eth used 
             totalEtherTraded += exactProduct[_id].price;
             //end the deal for the product
@@ -294,12 +294,12 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
 
     /// @notice Return the withdrawal amount of the agreement's signee
     function getWithdrawalBuyer() external view returns(uint256){
-        return withdraw_buyer[msg.sender];
+        return buyersAccount[msg.sender];
     }
 
     /// @notice Return the withdrawal amount of the agreement's receiver
     function getWithdrawalSeller() external view returns(uint256){
-        return withdraw_seller[msg.sender];
+        return sellersAccount[msg.sender];
     }
 
 }
