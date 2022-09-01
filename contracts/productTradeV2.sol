@@ -44,7 +44,7 @@ contract TradeV2 {
     /// @notice Store the seller's eth balance
     mapping(address => uint256) internal sellersAccount;
 
-    /// @notice A unique identifier of the agreement. The same as the id.
+    /// @notice A unique identifier of the agreement.
     mapping(uint256 => Product) public exactProduct;
 
     /// @notice Storing the id's of the products that the buyer has bought
@@ -146,21 +146,6 @@ contract TradeV2 {
         //if the ticked status is 1, increase it by 1 (2 means Yes)
         if (exactProduct[_id].buyerApproves == 1){
             exactProduct[_id].buyerApproves += 1;
-        //otherwise revert
-        } else {revert();}
-    }
-
-    /// @notice The buyer sets the status to No
-    function buyerTicksNo(uint256 _id) external {
-        //check if the deadline + 1 week hasn't passed
-        require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The changing status deadline has expired");
-        //check if the function's caller is the product's buyer
-        require(exactProduct[_id].buyer == msg.sender, "You are not the product's buyer");
-        //check if the function's status isn't already no
-        require(exactProduct[_id].buyerApproves != 1, "The status is already set to No");
-        //if the ticked status is 2, decrease it by 1 (1 means No)
-        if (exactProduct[_id].buyerApproves == 2){
-            exactProduct[_id].buyerApproves -= 1;
         //otherwise revert
         } else {revert();}
     }
