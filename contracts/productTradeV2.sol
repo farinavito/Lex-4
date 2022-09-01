@@ -56,10 +56,10 @@ contract TradeV2 {
     }
 
     /// @notice Saving the eth sent for the buyer to withdraw it
-    mapping(address => uint256) private buyersAccount;
+    mapping(address => uint256) internal buyersAccount;
 
     /// @notice Store the seller's eth balance
-    mapping(address => uint256) private sellersBalance;
+    mapping(address => uint256) internal sellersAccount;
 
     /// @notice A unique identifier of the agreement. The same as the id.
     mapping(uint256 => Product) public exactProduct;
@@ -291,7 +291,7 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
 
     /// @notice Fill up th seller's balance
     function fillUpBalance() external payable {
-        sellersBalance[msg.sender] += msg.value;
+        sellersAccount[msg.sender] += msg.value;
     } 
 
     /// @notice Return the withdrawal amount of the agreement's signee
