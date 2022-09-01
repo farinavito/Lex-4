@@ -292,6 +292,11 @@ The seller ticks yes. If he doesn't want to, he shouldn't sell it
         }
     }
 
+    /// @notice Fill up th seller's balance
+    function fillUpBalance() external payable {
+        sellersBalance[msg.sender] += msg.value;
+    } 
+
     /// @notice Return the withdrawal amount of the agreement's signee
     function getWithdrawalBuyer() external view returns(uint256){
         return buyersAccount[msg.sender];
