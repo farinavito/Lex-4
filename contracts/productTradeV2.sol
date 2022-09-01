@@ -70,6 +70,8 @@ contract TradeV2 {
     function buyProduct(address payable _seller, uint256 _productsPrice, uint256 _deadlinePeriod) external payable {
         //enough eth must be sent
         require(msg.value == _productsPrice, "You haven't sent enough ether");
+        //check that the seller has enough funds
+        //require(sellersAccount[_seller] >= _productsPrice, "Not enough funds from the seller");
         //increment the number of the id
         numProduct++;
         //creating a new instance of a product
@@ -159,7 +161,6 @@ contract TradeV2 {
         //check if the deal has ended
         require(exactProduct[_id].dealEnded == false, "The deal has already ended");
         //check if seller's and buyer's statuses are yes
-        //if (exactProduct[_id].buyerApproves == 2 && exactProduct[_id].sellerApproves == 2){
         if (exactProduct[_id].buyerApproves == 2){
             //transfer price of the product to the seller
             sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
