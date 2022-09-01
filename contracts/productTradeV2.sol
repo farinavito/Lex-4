@@ -15,11 +15,11 @@ contract TradeV2 {
         //storing product's fullfillment status
         bool dealEnded;
         //storing buyer's ticking status
-        uint256 buyerApproves;
+        uint2 buyerApproves;
     }
 
     /// @notice Using against re-entrancy
-    uint8 internal locked = 1;
+    uint2 internal locked = 1;
 
     /// @notice Used to increase the id of the agreements in the "buyProduct" function
     uint256 public numProduct = 0;
