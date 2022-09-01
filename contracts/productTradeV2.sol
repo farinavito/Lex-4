@@ -4,8 +4,6 @@ pragma solidity 0.8.11;
 contract TradeV2 {
 
     struct Product{
-        //id of the product
-        //uint256 id;
         //price of the product
         uint256 price;
         //seller's address where the eth will go
@@ -18,8 +16,6 @@ contract TradeV2 {
         bool dealEnded;
         //storing buyer's ticking status
         uint256 buyerApproves;
-        //storing seller's ticking status
-        //uint256 sellerApproves;           we can remove this, because the seller can only sell items that he guarantees that he can deliver
     }
 
     /// @notice Using against re-entrancy
