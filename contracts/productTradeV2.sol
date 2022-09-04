@@ -1,5 +1,5 @@
 //we still have the problem with what is inside the package
-//right the code as if you have a workin oracle
+//write the code as if you have a workin oracle
 //create a queue which will work as a load balancer
 
 
