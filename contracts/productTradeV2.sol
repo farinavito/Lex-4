@@ -1,6 +1,11 @@
-//we still have the problem with what is inside the package
-//write the code as if you have a workin oracle
-//create a queue which will work as a load balancer
+/*
+we still have the problem with what is inside the package
+write the code as if you have a workin oracle
+create a queue which will work as a load balancer 
+  -> make sure if it's the same deal or maybe caller, skip it. 
+  -> make sure the transactions are time based (seconds)
+  -> what to do in spikes of demand?
+*/
 
 
 // SPDX-License-Identifier: MIT
@@ -21,6 +26,7 @@ contract TradeV2 {
         bool dealEnded;
         //storing buyer's ticking status
         uint2 buyerApproves;
+        //
     }
 
     /// @notice Using against re-entrancy
