@@ -26,7 +26,8 @@ contract TradeV2 {
         bool dealEnded;
         //storing buyer's ticking status
         uint2 buyerApproves;
-        //
+        //storing if the item was delivered
+        bool delivered;
     }
 
     /// @notice Using against re-entrancy
@@ -71,7 +72,8 @@ contract TradeV2 {
         address productSeller,
         address productBuyer,
         uint256 productDeadline,
-        bool productDealEnded
+        bool productDealEnded,
+        bool productDelivered
     );
 
     /// @notice emitting an event fo notifying the user
@@ -105,6 +107,8 @@ contract TradeV2 {
         newProduct.dealEnded = false;
         //initializing ticking status to 1 which means No, 2 means Yes
         newProduct.buyerApproves = 1;
+        //setting to not delivered as default
+        newProduct.delivered = false;
         //storing the ids of the products and connecting them to msg.sender's address so we can display them to the frontend
         buyerProducts[msg.sender].push(numProduct);
         //storing the ids of the products and connecting them to _seller's address so we can display them to the frontend
@@ -116,7 +120,8 @@ contract TradeV2 {
             newProduct.seller,
             newProduct.buyer, 
             newProduct.deadline,
-            newProduct.dealEnded
+            newProduct.dealEnded,
+            newProduct.delivered
         );
     }
 
