@@ -1,10 +1,13 @@
 /*
 we still have the problem with what is inside the package
 write the code as if you have a workin oracle
+    -> you still have to implement that the racle changes the variable
 create a queue which will work as a load balancer 
   -> make sure if it's the same deal or maybe caller, skip it. 
   -> make sure the transactions are time based (seconds)
   -> what to do in spikes of demand?
+you still haven't implemented the sellers depozit when the client buys an item
+also, do we let seller to define it's own depozit (they will depozit as little as they could - whta this means for the game theory, therefore, the depozit wouldn't be such a burden)
 */
 
 
@@ -25,7 +28,7 @@ contract TradeV2 {
         //storing product's fullfillment status
         bool dealEnded;
         //storing buyer's ticking status
-        uint2 buyerApproves;
+        //uint2 buyerApproves;
         //storing if the item was delivered
         bool delivered;
     }
@@ -67,7 +70,6 @@ contract TradeV2 {
 
     /// @notice emitting an event when a product is created
     event ProductInfo(
-        uint256 productId,
         uint256 productPrice,
         address productSeller,
         address productBuyer,
@@ -106,7 +108,7 @@ contract TradeV2 {
         //initializing the variable that checks if the deal has ended to false
         newProduct.dealEnded = false;
         //initializing ticking status to 1 which means No, 2 means Yes
-        newProduct.buyerApproves = 1;
+        //newProduct.buyerApproves = 1;
         //setting to not delivered as default
         newProduct.delivered = false;
         //storing the ids of the products and connecting them to msg.sender's address so we can display them to the frontend
@@ -115,7 +117,6 @@ contract TradeV2 {
         sellerProducts[_seller].push(numProduct);
         //emitting an event
         emit ProductInfo(
-            newProduct.id, 
             newProduct.price, 
             newProduct.seller,
             newProduct.buyer, 
@@ -152,7 +153,7 @@ contract TradeV2 {
         //emit an event
         emit NotifyUser("Withdrawal has been transfered");
     }
-
+/*
     /// @notice The buyer sets the status to Yes
     function buyerTicksYes(uint256 _id) external {
         //check if the deadline + 1 week hasn't passed
@@ -167,7 +168,7 @@ contract TradeV2 {
         //otherwise revert
         } else {revert();}
     }
-
+*/
     /// @notice The seller forces end of the deal before the deadline, when both parties ticked Yes
     function forcedEndDeal(uint256 _id) external {
         //only the seller can call this function
@@ -176,8 +177,8 @@ contract TradeV2 {
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The deadline has expired");
         //check if the deal has ended
         require(exactProduct[_id].dealEnded == false, "The deal has already ended");
-        //check if seller's and buyer's statuses are yes
-        if (exactProduct[_id].buyerApproves == 2){
+        //check if seller's and buyer's statuses are yes or if the item was received
+        if (exactProduct[_id].buyerApproves == 2 || exactProduct[_id].delivered == true){
             //transfer price of the product to the seller
             sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
             //increase the eth used 
@@ -197,6 +198,7 @@ contract TradeV2 {
         require(exactProduct[_id].dealEnded == false, "This deal was already paid out");
         //check if the deadline + 1 week is over
         require(exactProduct[_id].deadline + 604800 >= block.timestamp, "The deadline has expired");
+        /*
         //if buyer's status is No and seller's is Yes
         if (exactProduct[_id].buyerApproves == 1){
             //burn the eth
@@ -205,6 +207,22 @@ contract TradeV2 {
             exactProduct[_id].dealEnded = true;
         //if both statuses are Yes
         } else if (exactProduct[_id].buyerApproves == 2){
+            //transfer price of the product to the seller
+            sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
+            //increase the eth used 
+            totalEtherTraded += exactProduct[_id].price;
+            //end the deal for the product
+            exactProduct[_id].dealEnded = true;
+        }
+        */
+        //if it wasn't delivered
+        if (exactProduct[_id].delivered == false){
+            //burn the eth
+            totalEtherBurnt += exactProduct[_id].price;
+            //end the deal for the product
+            exactProduct[_id].dealEnded = true;
+        //if both statuses are Yes
+        } else {
             //transfer price of the product to the seller
             sellersAccount[exactProduct[_id].seller] += exactProduct[_id].price;
             //increase the eth used 
