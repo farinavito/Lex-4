@@ -1,13 +1,18 @@
 /*
 we still have the problem with what is inside the package
+
 write the code as if you have a workin oracle
     -> you still have to implement that the racle changes the variable
+
 create a queue which will work as a load balancer 
   -> make sure if it's the same deal or maybe caller, skip it. 
   -> make sure the transactions are time based (seconds)
   -> what to do in spikes of demand?
-you still haven't implemented the sellers depozit when the client buys an item
-also, do we let seller to define it's own depozit (they will depozit as little as they could - whta this means for the game theory, therefore, the depozit wouldn't be such a burden)
+
+right now, we don't implement this,        |->  you still haven't implemented the seller's depozit when the client buys an item - do we even need it? They won't be incentivized to work honestly 
+but we should have some slashing mehanism  |->  also, do we let seller to define it's own depozit (they will depozit as little as they could - whta this means for the game theory, therefore, the depozit wouldn't be such a burden)
+
+when and what do we charge/take commission?
 */
 
 
