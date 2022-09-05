@@ -3,20 +3,33 @@ we still have the problem with what is inside the package
 
 write the code as if you have a workin oracle
     -> you still have to implement that the racle changes the variable
-    -> when we call the oracle, make sure that we check if the item was already received or if the deal has ended 
+    -> when we call the oracle, make sure that we check if the item was already received or if the deal has ended; we can also check that when storing the transaction in the queue
+    -> the oracle "picks up" the transaction by a Keeper or by being called by a function we control. The point is that we control the amount of API calls per minute (later per seconds)
+    -> we need to store the seller's delivery choice to know which API to use. This could be one prerequirement before you are able to sell on our platform
+    -> what do we do if the API doesn't work? probably the best is to froze that transaction and check them later when the API works. No lost, just longer waiting period to be paid out
 
 create a queue which will work as a load balancer 
     //why do we even need it? Because, we can only make a few API calls per minute
-    //when should it be initialized? Inside payOut(), we call the function, which will save the transaction in the queue and then will be picked up by the oracle
+    //when should it be initialized? NOt like this, storing it for historic reference. For true exaample, look bellow ::: Inside payOut(), we call the function, which will save the transaction in the queue and then will be picked up by the oracle
     //we can also minimize the API calls by storing the state in the Product's struct and only make API calls in one function
-  -> make sure if it's the same deal or maybe caller, skip it. 
-  -> make sure the transactions are time based (seconds)
-  -> what to do in spikes of demand?
+    //we can also have differrent queues for different API calls
+    //maybe the queue should be initialized when the user buys the item and is picked up by the oracle. If it's not delivered, put it back in the line. 
+        -> Should we check it only after the deadline has ended?  Maybe we should initialize the check to be 2 weeks and then we have the ability to change it based on the previous deliveries. Or eventually when there will be a lot of transactions, the queue will be so long we won't need this witing period. We will deprecated this function when the queue will be long enough. 
+        -> We don't need to store timestamp in the struct, use it in a mapping inside the queue contract. Also we don't need to store the id inside the struct, just use the number generated in buyProduct()
+        -> the purpose of this is to shorten the waiting time. If the transaction is stored in the queue, when you want to payOut(), you could wait for a long time. Bad UX
+    //what do we store in the queue? Probably the struct's id, however, currently we don't store the id inside the struct
+    -> make sure if it's the same deal or maybe caller, skip it. 
+    -> make sure the transactions are time based (seconds)
+    -> what to do in spikes of demand?
 
 right now, we don't implement this,        |->  you still haven't implemented the seller's depozit when the client buys an item - do we even need it? They won't be incentivized to work honestly 
 but we should have some slashing mehanism  |->  also, do we let seller to define it's own depozit (they will depozit as little as they could - whta this means for the game theory, therefore, the depozit wouldn't be such a burden)
 
 when and what do we charge/take commission?
+
+we also have to display all the items bought/sold
+
+the deadline shouldn't be more than a month in any case
 */
 
 
