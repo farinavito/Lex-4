@@ -52,7 +52,7 @@ contract LoadBalancer {
         //storing the time
         newTransaction.time = block.timestamp;
         //check if the waiting period is on
-        if(){
+        if(waitingPeriod == false){
             queue.push(newTransaction.id);
         } else {
             waitingPeriod.push(newTransaction.id);
