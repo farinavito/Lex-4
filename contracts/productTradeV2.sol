@@ -3,10 +3,11 @@ we still have the problem with what is inside the package
 
 write the code as if you have a workin oracle
     -> you still have to implement that the racle changes the variable
+    -> when we call the oracle, make sure that we check if the item was already received or if the deal has ended 
 
 create a queue which will work as a load balancer 
     //why do we even need it? Because, we can only make a few API calls per minute
-    //when should this work? Inside payOut(), when we make a call to the oracle for checking if the item has been received
+    //when should it be initialized? Inside payOut(), we call the function, which will save the transaction in the queue and then will be picked up by the oracle
     //we can also minimize the API calls by storing the state in the Product's struct and only make API calls in one function
   -> make sure if it's the same deal or maybe caller, skip it. 
   -> make sure the transactions are time based (seconds)
