@@ -41,7 +41,7 @@ contract LoadBalancer {
         _;
     }
 
-    /// @notice 
+    /// @notice creating a Transaction struct and storing it
     function initialize(uint256 _id) external {
         //increase the queue's number
         queueNum++;
@@ -60,8 +60,21 @@ contract LoadBalancer {
 
     }
 
+    /// @notice checking if 1 week has already past in waitingPeriod and storing it in the queue
+    //only owner and keeper
+    //once a day it needs to call all the elements in the array
+    //should the function be called once and check every element in the array or should it be called for every element
+    function checkWaitingPeriod() external {
+        if(waitingPeriod[0].time + 604800 <= block.timestamp){
+            //store the element in the queue
+            //delete the first element from waitingPeriod
+        } else {
+            //move the first element from waitingPeriod to the end of an array
+        }
+    }
+
     /// @notice set the waiting period to false
-    function setWaitingPeriodFalse() onlyOwner {
+    function setWaitingPeriodFalse() external onlyOwner {
         waitingPeriod = false;
     }
 

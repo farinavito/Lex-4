@@ -17,6 +17,9 @@ create a queue which will work as a load balancer
         -> Should we check it only after the deadline has ended?  Maybe we should initialize the check to be 2 weeks and then we have the ability to change it based on the previous deliveries. Or eventually when there will be a lot of transactions, the queue will be so long we won't need this witing period. We will deprecated this function when the queue will be long enough. 
         -> We don't need to store timestamp in the struct, use it in a mapping inside the queue contract. Also we don't need to store the id inside the struct, just use the number generated in buyProduct()
         -> the purpose of this is to shorten the waiting time. If the transaction is stored in the queue, when you want to payOut(), you could wait for a long time. Bad UX
+        -> do we even need to store in in a special "waitingTime queue"? We store it in a queue and if 1 week (or maybe more) hasn't past from making a purchase we skip it and don't call the API. But this means we have Transactions we won't even check. Is this optimized?
+        -> the API() and checkWaitingPeriod() can be called by us and not the Keeper. We should strive for full decentralization, but in the begining this probably wouldn't be sustainable. 
+        -> we could use Protectors when calling both of the functions mentioned above
     //what do we store in the queue? Probably the struct's id, however, currently we don't store the id inside the struct
     -> make sure if it's the same deal or maybe caller, skip it. 
     -> make sure the transactions are time based (seconds)
@@ -30,6 +33,8 @@ when and what do we charge/take commission?
 we also have to display all the items bought/sold
 
 the deadline shouldn't be more than a month in any case
+
+maybe the smart contract should be optimized for where are the seller and the buyer from
 */
 
 
