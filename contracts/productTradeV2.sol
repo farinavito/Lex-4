@@ -25,6 +25,7 @@ create a queue which will work as a load balancer
             2) we won't have an unused array as a variable
             3) we won't have to deal with moving all elements from waitingPeriod to queue, when we stop the waiting period
     //what do we store in the queue? Probably the struct's id, however, currently we don't store the id inside the struct
+    //if only we can call function that calls API, we don't need load balancer. However, we will need it if we want to fully decentralize our service
     -> make sure if it's the same deal or maybe caller, skip it. 
     -> make sure the transactions are time based (seconds)
     -> what to do in spikes of demand?

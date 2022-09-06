@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.11;
 
-contract LoadBalancer {
+contract Queue {
 
     
     struct Transaction{
@@ -33,7 +33,7 @@ contract LoadBalancer {
     }
 
     /// @notice creating a Transaction struct and storing it
-    function initialize(uint256 _id) external {
+    function addToQue(uint256 _id) external {
         //increase the queue's number
         queueNum++;
         //creating a new instance
