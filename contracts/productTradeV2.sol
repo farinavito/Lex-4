@@ -20,6 +20,10 @@ create a queue which will work as a load balancer
         -> do we even need to store in in a special "waitingTime queue"? We store it in a queue and if 1 week (or maybe more) hasn't past from making a purchase we skip it and don't call the API. But this means we have Transactions we won't even check. Is this optimized?
         -> the API() and checkWaitingPeriod() can be called by us and not the Keeper. We should strive for full decentralization, but in the begining this probably wouldn't be sustainable. 
         -> we could use Protectors when calling both of the functions mentioned above
+        -> it's better if we check the waiting period inside of function that calls the API. Why?
+            1) when we won't need the waiting period anymore, we will only change the function thaat calls the api
+            2) we won't have an unused array as a variable
+            3) we won't have to deal with moving all elements from waitingPeriod to queue, when we stop the waiting period
     //what do we store in the queue? Probably the struct's id, however, currently we don't store the id inside the struct
     -> make sure if it's the same deal or maybe caller, skip it. 
     -> make sure the transactions are time based (seconds)
