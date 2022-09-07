@@ -40,6 +40,8 @@ we also have to display all the items bought/sold
 the deadline shouldn't be more than a month in any case
 
 maybe the smart contract should be optimized for where are the seller and the buyer from
+
+somehow, we need to make sure that the api that the seller provides is correct
 */
 
 
